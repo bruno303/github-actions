@@ -1,0 +1,41 @@
+name: Reusable OpenCode
+
+on:
+  workflow_call:
+    secrets:
+      token:
+        required: true
+    inputs:
+      repository:
+        description: 'The repo to run OpenCode on (e.g., bruno303/study-topics)'
+        required: true
+        type: string
+
+jobs:
+  opencode:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          repository: ${{ inputs.repository }}
+          token: ${{ secrets.token }}
+
+      - name: Install global skills
+        run: |
+          mkdir -p ~/.config/opencode/skills
+          git clone https://github.com/bruno303/ai-tools.git ~/ai-tools
+          ln -s ~/ai-tools/skills ~/.config/opencode/skills
+
+      - name: Run opencode
+        uses: anomalyco/opencode/github@latest
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        with:
+          model: ${{ vars.CODE_REVIEW_MODEL }}
