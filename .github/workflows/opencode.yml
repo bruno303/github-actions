@@ -5,6 +5,8 @@ on:
     secrets:
       token:
         required: true
+      deepseek_api_key:
+        required: true
     inputs:
       repository:
         description: 'The repo to run OpenCode on (e.g., bruno303/study-topics)'
@@ -36,6 +38,6 @@ jobs:
       - name: Run opencode
         uses: anomalyco/opencode/github@latest
         env:
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.deepseek_api_key }}
         with:
           model: ${{ vars.CODE_REVIEW_MODEL }}
