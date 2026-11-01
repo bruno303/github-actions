@@ -42,11 +42,26 @@ jobs:
     uses: bruno303/github-actions/.github/workflows/opencode-review.yml@main
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
+      api_key: ${{ secrets.OPENCODE_API_KEY }}
     with:
       repository: owner/repo-name
+      # Optional override; defaults to opencode-go/deepseek-v4.1-flash
+      model: opencode-go/deepseek-v4.1-flash
 ```
 
 ## Configuration
+
+### Secrets
+
+Both workflows require:
+
+- `token` - GitHub token used to checkout the target repository and post reviews
+- `api_key` - An OpenCode Go API key, exposed to OpenCode as `OPENCODE_API_KEY`
+
+### Model
+
+The default model is `opencode-go/deepseek-v4.1-flash`. Callers may override it
+through the `model` input.
 
 ### Permissions
 

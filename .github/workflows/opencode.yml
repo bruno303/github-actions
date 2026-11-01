@@ -5,13 +5,18 @@ on:
     secrets:
       token:
         required: true
-      deepseek_api_key:
+      api_key:
         required: true
     inputs:
       repository:
         description: 'The repo to run OpenCode on (e.g., bruno303/study-topics)'
         required: true
         type: string
+      model:
+        description: 'OpenCode model in provider/model form'
+        required: false
+        type: string
+        default: 'opencode-go/deepseek-v4.1-flash'
 
 jobs:
   opencode:
@@ -38,6 +43,6 @@ jobs:
       - name: Run opencode
         uses: anomalyco/opencode/github@latest
         env:
-          DEEPSEEK_API_KEY: ${{ secrets.deepseek_api_key }}
+          OPENCODE_API_KEY: ${{ secrets.api_key }}
         with:
-          model: ${{ vars.CODE_REVIEW_MODEL }}
+          model: ${{ inputs.model }}
